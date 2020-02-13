@@ -16,7 +16,7 @@ const findBy = (filter: { [key: string]: any }): QueryBuilder =>
 
 const insert = (user: User): Promise<QueryBuilder> =>
   db('users')
-    .insert(user, 'id')
+    .insert(user)
     .then(ids => findBy({ id: ids[0] }).first())
 
 export default { find, findBy, insert }
