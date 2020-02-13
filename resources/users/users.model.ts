@@ -6,7 +6,7 @@ type User = {
   password: string
 }
 
-const find = (): QueryBuilder => db('users').select('id', 'username')
+export const find = (): QueryBuilder => db('users').select('id', 'username')
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 const findBy = (filter: { [key: string]: any }): QueryBuilder =>
