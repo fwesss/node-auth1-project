@@ -16,7 +16,7 @@ Use `Node.js`, `Express` and `Knex` to build an API that provides **Register** a
 
 This project will be completed over two days.
 
-## Part 1, due after completing the first module.
+## [x] Part 1, due after completing the first module.
 
 ### Complete the following endpoints:
 
