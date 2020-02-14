@@ -27,7 +27,7 @@ const login = async (req: SessionRequest, res: Response): Promise<void> => {
     const userToLogin = await Users.findBy({ username }).first()
     if (userToLogin && bcrypt.compareSync(password, userToLogin.password)) {
       // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-      req.session!.user = userToLogin
+      req.session!.loggedIn = true
       res.status(200).json({ message: `Welcome ${username}!` })
     } else {
       res.status(401).json({ message: 'You shall not pass!' })
