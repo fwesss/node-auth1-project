@@ -10,6 +10,10 @@ import helmet from 'helmet'
 import morgan from 'morgan'
 import cors from 'cors'
 import session from 'express-session'
+import knexSessionStore from 'connect-session-knex'
+import db from '../data/dbConfig'
+
+const ConnectedSessionStore = knexSessionStore(session)
 
 const sessionConfig = {
   name: 'tuna',
@@ -21,6 +25,14 @@ const sessionConfig = {
   httpOnly: true,
   resave: false,
   saveUninitialized: false,
+
+  store: new ConnectedSessionStore({
+    knex: db,
+    tablename: 'sessions',
+    sidfieldname: 'sid',
+    createtable: true,
+    clearInterval: 1000 * 60 * 60,
+  }),
 }
 
 const jsonSyntaxErrorHandler = (
