@@ -39,13 +39,11 @@ const login = async (req: SessionRequest, res: Response): Promise<void> => {
 
 const logout = (req: Request, res: Response): void =>
   req.session &&
-  req.session.destroy(error => {
-    if (error) {
-      res.json({ message: 'Error logging out', error })
-    } else {
-      res.json({ message: 'Goodbye!' })
-    }
-  })
+  req.session.destroy(error =>
+    error
+      ? res.json({ message: 'Error logging out', error })
+      : res.json({ message: 'Goodbye!' })
+  )
 
 export default {
   register,
