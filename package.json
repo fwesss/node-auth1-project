@@ -11,10 +11,10 @@
     "check-types": "tsc --watch",
     "format": "yarn run prettier --ignore-path .gitignore --write",
     "lint": "eslint --ext .ts .",
-    "migrate:latest": "npx knex migrate:latest",
-    "migrate:rollback": "npx knex migrate:rollback",
+    "migrate:latest": "npx knex migrate:latest --knexfile ./src/knexfile.ts",
+    "migrate:rollback": "npx knex migrate:rollback --knexfile ./src/knexfile.ts",
     "prettier": "prettier --ignore-path .gitignore \"**/*.+(json|js|ts)\"",
-    "seed:run": "npx knex seed:run",
+    "seed:run": "npx knex seed:run --knexfile ./src/knexfile.ts",
     "server": "tsc && nodemon ./build/index.js",
     "validate": "npm-run-all --parallel check-format lint"
   },
