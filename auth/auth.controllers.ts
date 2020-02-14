@@ -17,7 +17,7 @@ const register = async (req: Request, res: Response): Promise<void> => {
 }
 
 type SessionRequest = Request & {
-  session: Express.Session
+  session?: Express.Session
 }
 
 const login = async (req: SessionRequest, res: Response): Promise<void> => {
@@ -26,7 +26,8 @@ const login = async (req: SessionRequest, res: Response): Promise<void> => {
   try {
     const userToLogin = await Users.findBy({ username }).first()
     if (userToLogin && bcrypt.compareSync(password, userToLogin.password)) {
-      req.session.user = userToLogin
+      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+      req.session!.user = userToLogin
       res.status(200).json({ message: `Welcome ${username}!` })
     } else {
       res.status(401).json({ message: 'You shall not pass!' })
@@ -36,7 +37,18 @@ const login = async (req: SessionRequest, res: Response): Promise<void> => {
   }
 }
 
+const logout = (req: Request, res: Response): void =>
+  req.session &&
+  req.session.destroy(error => {
+    if (error) {
+      res.json({ message: 'Error logging out', error })
+    } else {
+      res.json({ message: 'Goodbye!' })
+    }
+  })
+
 export default {
   register,
   login,
+  logout,
 }

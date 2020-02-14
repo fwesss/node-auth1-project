@@ -7,6 +7,7 @@ import {
   NextFunction,
 } from 'express'
 import helmet from 'helmet'
+import morgan from 'morgan'
 import cors from 'cors'
 import session from 'express-session'
 
@@ -19,7 +20,7 @@ const sessionConfig = {
   },
   httpOnly: true,
   resave: false,
-  saveUnitialized: false,
+  saveUninitialized: false,
 }
 
 const jsonSyntaxErrorHandler = (
@@ -37,6 +38,7 @@ const jsonSyntaxErrorHandler = (
 
 export default (server: Application): void => {
   server.use(helmet())
+  server.use(morgan('dev'))
   server.use(json())
   server.use(cors())
   server.use(session(sessionConfig))
