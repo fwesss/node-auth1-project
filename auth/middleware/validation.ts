@@ -18,11 +18,7 @@ const userValidationResult = (req: Request): Matcher =>
     .concat(usernameValidator(req))
     .concat(passwordValidator(req))
 
-const validateUser = (
-  req: Request,
-  res: Response,
-  next: NextFunction
-): void => {
+export default (req: Request, res: Response, next: NextFunction): void => {
   const didUserValidate = didItValidate(userValidationResult(req))
 
   if (!didUserValidate) {
@@ -31,5 +27,3 @@ const validateUser = (
     next()
   }
 }
-
-export default validateUser
