@@ -19,7 +19,7 @@ const sessionConfig = {
   },
   httpOnly: true,
   resave: false,
-  saveUnitialized: false,
+  saveUninitialized: false,
 }
 
 const jsonSyntaxErrorHandler = (
