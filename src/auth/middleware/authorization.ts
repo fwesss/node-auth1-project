@@ -1,10 +1,9 @@
 import { Request, Response, NextFunction } from 'express'
+import { UnauthorizedError } from '../../server/middleware/error'
 
-export default (
-  req: Request,
-  res: Response,
-  next: NextFunction
-): void | Response =>
+const checkAuth = (req: Request, _res: Response, next: NextFunction): void =>
   req.session && req.session.loggedIn
     ? next()
-    : res.status(401).json({ message: 'You shall not pass!' })
+    : next(new UnauthorizedError({ message: 'You shall not pass!' }))
+
+export default checkAuth

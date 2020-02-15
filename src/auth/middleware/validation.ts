@@ -1,6 +1,11 @@
 import { Request, Response, NextFunction } from 'express'
 import Validation from 'folktale/validation'
-import { validator, didItValidate, Matcher } from '../../utils/validator'
+import {
+  validator,
+  didItValidate,
+  Matcher,
+  ValidationError,
+} from '../../utils/validator'
 
 const { Success } = Validation
 
@@ -18,12 +23,18 @@ const userValidationResult = (req: Request): Matcher =>
     .concat(usernameValidator(req))
     .concat(passwordValidator(req))
 
-export default (req: Request, res: Response, next: NextFunction): void => {
-  const didUserValidate = didItValidate(userValidationResult(req))
+const checkValidation = (
+  req: Request,
+  _res: Response,
+  next: NextFunction
+): void =>
+  didItValidate(userValidationResult(req))
+    ? next()
+    : next(
+        new ValidationError(
+          'Submitted data is incomplete or incorrect',
+          userValidationResult(req).value
+        )
+      )
 
-  if (!didUserValidate) {
-    res.status(400).json({ errors: userValidationResult(req).value })
-  } else {
-    next()
-  }
-}
+export default checkValidation
