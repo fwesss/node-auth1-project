@@ -1,5 +1,5 @@
 /* eslint-disable no-console */
-import server from './api/server'
+import server from './server/server'
 
 const PORT = process.env.PORT || 4000
 
