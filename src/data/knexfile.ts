@@ -6,10 +6,10 @@ module.exports = {
     },
     useNullAsDefault: true,
     migrations: {
-      directory: './src/data/migrations',
+      directory: './migrations',
     },
     seeds: {
-      directory: './src/data/seeds',
+      directory: './seeds',
     },
     pool: {
       afterCreate: (

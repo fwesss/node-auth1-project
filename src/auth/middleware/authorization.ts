@@ -1,5 +1,5 @@
 import { Request, Response, NextFunction } from 'express'
-import { UnauthorizedError } from '../../server/middleware/error'
+import { UnauthorizedError } from '../../server/middleware/errorHandler'
 
 const checkAuth = (req: Request, _res: Response, next: NextFunction): void =>
   req.session && req.session.loggedIn

@@ -1,7 +1,8 @@
 import { Request, Response, NextFunction } from 'express'
 import bcrypt from 'bcrypt'
+import Result from 'folktale/result'
 import Users from '../resources/users/users.model'
-import { UnauthorizedError } from '../server/middleware/error'
+import { UnauthorizedError } from '../server/middleware/errorHandler'
 
 const register = async (
   req: Request,
