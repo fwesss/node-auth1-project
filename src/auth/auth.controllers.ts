@@ -35,7 +35,7 @@ type SessionRequest = Request & {
 }
 
 const login = async (
-  req: SessionRequest,
+  req: SessionRequest | Request,
   res: Response,
   next: NextFunction
 ): Promise<void> => {
@@ -46,7 +46,7 @@ const login = async (
 
     if (userToLogin && bcrypt.compareSync(password, userToLogin.password)) {
       // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-      req.session.loggedIn = true
+      req.session!.loggedIn = true
       res.status(200).json({ message: `Welcome ${username}!` })
     } else {
       next(new UnauthorizedError({ message: 'You shall not pass!' }))
