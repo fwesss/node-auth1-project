@@ -2,9 +2,7 @@
 import { Request, Response, NextFunction } from 'express'
 import bcrypt from 'bcrypt'
 import Users from '../resources/users/users.model'
-import guaranteedPromise, {
-  guaranteedQueryBuilder,
-} from '../utils/guaranteedPromise'
+import guaranteedPromise from '../utils/guaranteedPromise'
 import {
   UnauthorizedError,
   DatabaseError,
