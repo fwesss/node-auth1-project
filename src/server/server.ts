@@ -5,7 +5,7 @@ import morgan from 'morgan'
 import cors from 'cors'
 import session from 'express-session'
 import sessionConfig from './middleware/sessionStore'
-import errorHandler from './middleware/error'
+import errorHandler from './middleware/errorHandler'
 
 import apiRouter from '../api/api.router'
 

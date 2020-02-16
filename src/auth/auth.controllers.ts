@@ -1,24 +1,35 @@
+/* eslint-disable @typescript-eslint/no-non-null-assertion */
 import { Request, Response, NextFunction } from 'express'
 import bcrypt from 'bcrypt'
 import Users from '../resources/users/users.model'
-import { UnauthorizedError } from '../server/middleware/error'
+import guaranteedPromise, {
+  guaranteedQueryBuilder,
+} from '../utils/guaranteedPromise'
+import {
+  UnauthorizedError,
+  DatabaseError,
+} from '../server/middleware/errorHandler'
 
 const register = async (
   req: Request,
   res: Response,
   next: NextFunction
-): Promise<void> => {
+): Promise<Response | void> => {
   const user = req.body
 
   const hash = bcrypt.hashSync(user.password, 10)
   const hashedUser = { ...user, password: hash }
 
-  try {
-    const registeredUser = await Users.insert(hashedUser)
-    res.status(201).json(registeredUser)
-  } catch (error) {
-    next(new Error('Registration failed'))
-  }
+  const registeredUser = await guaranteedPromise(Users.insert(hashedUser))
+
+  return registeredUser.ok
+    ? res.status(201).json(registeredUser.data)
+    : next(
+        new DatabaseError({
+          message: 'Registration failed',
+          dbMessage: registeredUser.error,
+        })
+      )
 }
 
 type SessionRequest = Request & {
@@ -34,6 +45,7 @@ const login = async (
 
   try {
     const userToLogin = await Users.findBy({ username }).first()
+
     if (userToLogin && bcrypt.compareSync(password, userToLogin.password)) {
       // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
       req.session!.loggedIn = true
@@ -42,7 +54,12 @@ const login = async (
       next(new UnauthorizedError({ message: 'You shall not pass!' }))
     }
   } catch (error) {
-    next(new Error('Login failed'))
+    next(
+      new DatabaseError({
+        message: 'Login failed',
+        dbMessage: error,
+      })
+    )
   }
 }
 

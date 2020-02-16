@@ -1,5 +1,6 @@
 import { Request, Response, NextFunction } from 'express'
 import { find } from './users.model'
+import { DatabaseError } from '../../server/middleware/errorHandler'
 
 const getUsers = async (
   _req: Request,
@@ -10,7 +11,12 @@ const getUsers = async (
     const users = await find()
     res.status(200).json(users)
   } catch (error) {
-    next(new Error('Could not retrieve users'))
+    next(
+      new DatabaseError({
+        message: 'Could not retrieve users',
+        dbMessage: error,
+      })
+    )
   }
 }
 
