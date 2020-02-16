@@ -31,7 +31,7 @@ const register = async (
 }
 
 type SessionRequest = Request & {
-  session: Express.Session
+  session?: Express.Session
 }
 
 const login = async (
@@ -46,7 +46,7 @@ const login = async (
 
     if (userToLogin && bcrypt.compareSync(password, userToLogin.password)) {
       // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-      req.session.loggedIn = true
+      req.session!.loggedIn = true
       res.status(200).json({ message: `Welcome ${username}!` })
     } else {
       next(new UnauthorizedError({ message: 'You shall not pass!' }))
