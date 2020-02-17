@@ -35,7 +35,7 @@ type SessionRequest = Request & {
 }
 
 const login = async (
-  req: SessionRequest,
+  req: SessionRequest | Request,
   res: Response,
   next: NextFunction
 ): Promise<void> => {
